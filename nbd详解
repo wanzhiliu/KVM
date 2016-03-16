@@ -4,3 +4,26 @@
      与iscsi比较类似，区别是iscsi使用的是scsi协议
 2为什么要用nbd
   在虚拟化的时候使用nbd我们可以将qcow2镜像挂载为块设备，与guestfish不同，guestfish挂载的是文件系统。 qemu-nbd挂载的是块设备
+
+
+
+ndb的使用
+ 创建一个磁盘镜像
+   dd if=/dev/zero of=/root/nbdtest bs=1M count=1024
+   将这个镜像共享出去
+   nbd-server /root/nbdtest 2000
+  挂载镜像
+    /usr/local/sbin/nbd-client 127.0.0.1 2000 /dev/nbd1
+   mount /dev/nbd1 /mnt
+查看
+df -h
+..
+/dev/nbd1 1014M 33M 982M 4% /mnt
+
+使用nbd挂载qcow2镜像
+注意 centos6默认没有qemu-nbd命令，要使用必须自己下载qemu的源代码编译
+qemu-nbd -c /dev/nbd2 ct7.qcow2
+mount /dev/nbd2p1 /mnt/
+卸载
+umount /mnt/
+qemu-nbd -d /dev/nbd2
