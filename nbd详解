@@ -1,0 +1,6 @@
+1 nbd是什么
+  nbd： Network block device,主要是通过tcp协议将块设备共享给其他服务器使用。 
+    与nfs区别： nfs是将文件系统通过网络协议共享给其他服务器使用。
+     与iscsi比较类似，区别是iscsi使用的是scsi协议
+2为什么要用nbd
+  在虚拟化的时候使用nbd我们可以将qcow2镜像挂载为块设备，与guestfish不同，guestfish挂载的是文件系统。 qemu-nbd挂载的是块设备
